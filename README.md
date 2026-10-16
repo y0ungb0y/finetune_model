@@ -57,9 +57,21 @@ finetune_model/
         └── adapter_model.safetensors  # 需另行准备
 ```
 
-当前仓库未提供公开权重下载地址。请向项目维护者获取与这些适配器对应的原始基础模型及所需 LoRA 权重，再放入上述位置；不要用任意相近参数量的模型替换。
+### ModelScope 模型下载
 
-根目录配置为 `LlamaForCausalLM`，32 层、隐藏维度 4096、词表大小 128256、最大位置长度 8192。原始基础权重为 BF16，四个分片合计约 14.96 GiB；每套 LoRA 权重约 320 MiB，r=64、alpha=16。现有文件不能完整确认具体模型发行版本和下载来源。
+可在 ModelScope（魔搭）平台获取与本项目配置接近的 **Meta-Llama-3-8B-Instruct** 模型：
+
+- [模型主页与下载入口：LLM-Research/Meta-Llama-3-8B-Instruct](https://modelscope.cn/models/LLM-Research/Meta-Llama-3-8B-Instruct)
+- [模型文件列表](https://modelscope.cn/models/LLM-Research/Meta-Llama-3-8B-Instruct/files)
+- [ModelScope 官方下载说明](https://modelscope.cn/docs/models/download)
+
+进入模型页面的文件列表，下载四个 `model-00001-of-00004.safetensors` 至 `model-00004-of-00004.safetensors` 分片。下载文件应放在上方目录树标示的项目根目录，不能放入某个任务的 `lora_adapter/` 目录。用于本项目 Transformers/PEFT 加载流程的文件格式为 safetensors。
+
+**对应关系说明：** 该 ModelScope 条目的模型架构、层数、隐藏维度、词表和配置中的结束 token 与本项目相符，但四个分片的 SHA-256 与原始本地交付文件不同。因此，这里提供的是同架构指令模型的下载入口，尚未确认它就是现有 LoRA 训练时使用的原始基座。需要复现已有微调结果时，应向维护者确认并获取原训练基座；不能仅依据相同架构就保证适配器效果一致。
+
+ModelScope 上述链接提供基础模型，不包含本项目训练得到的情绪、同理心或礼貌性 LoRA 权重。各任务的 `adapter_model.safetensors` 仍需向项目维护者单独获取，放入对应适配器目录。仓库中的配置与 tokenizer 也可能与镜像当前版本不同，部署已有适配器时应保留与原训练配套的文件。
+
+根目录配置为 `LlamaForCausalLM`，32 层、隐藏维度 4096、词表大小 128256、最大位置长度 8192。原始基础权重为 BF16，四个分片合计约 14.96 GiB；每套 LoRA 权重约 320 MiB，r=64、alpha=16。原始本地基座的具体发行版本和来源仍待确认。
 
 只运行一个任务时，准备基础模型和该任务适配器即可。`checkpoint-*`、`optimizer.pt`、`scheduler.pt`、`training_args.bin` 不是推理必需文件。LoRA 不是独立完整模型，不能只复制适配器权重就运行。业务数据仅在批量任务或评估时需要，第 5 节单条示例无需业务数据。
 
