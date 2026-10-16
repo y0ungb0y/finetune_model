@@ -1,0 +1,12 @@
+{
+  "base_model": "/data/xinwang/finetune_model",
+  "data_file": "/data/xinwang/finetune_model/polite/对话内容礼貌性_清洗后.json",
+  "train_samples": 10976,
+  "eval_samples": 1371,
+  "test_samples": 1374,
+  "epochs": 3,
+  "batch_size": 16,
+  "learning_rate": 0.0002,
+  "lora_r": 64,
+  "lora_alpha": 16
+}

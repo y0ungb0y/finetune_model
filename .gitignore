@@ -1,0 +1,37 @@
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local secrets and editor / system files
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Distribution archives
+*.zip
+wheelhouse/
+
+# Model weights and training state (distributed separately)
+*.safetensors
+*.bin
+*.pt
+*.pth
+checkpoint-*/
+outputs/
+
+# Business datasets, historical predictions and training logs
+/emotion/*.json
+/empathy/*.json
+/polite/*.json
+*.xls
+*.xlsx
+*.log
